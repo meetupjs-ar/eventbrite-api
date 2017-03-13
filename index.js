@@ -21,14 +21,26 @@ const options = {
     'location.longitude': process.env.LON,
     'location.within': process.env.RADIUS
 }
+const whiteList = process.env.WHITE_LIST ? process.env.WHITE_LIST.split(',') : []
 
 async function handler (req, res) {
     try {
         // we look for the data in the memory cache
         // if it's not present, we fetch, format and store the data into the cache
         if (!cache.get('data')) {
-            const data = await makeRequest(`https://www.eventbriteapi.com/v3/events/search/?token=${process.env.TOKEN}&${querystring.stringify(options)}`)
-                .then(data => formatEvents(data.events))
+            const whiteListPromises = whiteList.map(organizerId => {
+                return makeRequest(`https://www.eventbriteapi.com/v3/events/search/?token=${process.env.TOKEN}&organizer.id=${organizerId}`)
+            })
+            const allPromises = whiteListPromises.concat([
+                makeRequest(`https://www.eventbriteapi.com/v3/events/search/?token=${process.env.TOKEN}&${querystring.stringify(options)}`)
+            ])
+
+            const data = await Promise.all(allPromises)
+                .then(data => data.reduce(
+                    (output, rawData) => output.concat(rawData.events),
+                    []
+                ))
+                .then(formatEvents)
 
             cache.put('data', data, cacheExpiration)
         }
