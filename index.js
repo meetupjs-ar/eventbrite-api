@@ -1,5 +1,5 @@
-// if we're in development, we require an specific configuration located at '.env'
-// at production, that configuration is setted directly and we don't use that file
+// si estamos en desarrollo, requerimos el archivo '.env'
+// en producción, esa configuración se recibe directamente como variables de entorno
 if (process.env.NODE_ENV === 'development') {
     require('dotenv').config()
 }
@@ -25,23 +25,30 @@ const whiteList = process.env.WHITE_LIST ? process.env.WHITE_LIST.split(',') : [
 
 async function handler (req, res) {
     try {
-        // we look for the data in the memory cache
-        // if it's not present, we fetch, format and store the data into the cache
+        // si el resultado del API no fue previamente cacheado
         if (!cache.get('data')) {
+            // creamos un array de promesas con las peticiones a los eventos que sabemos que
+            // no entran en el rango
             const whiteListPromises = whiteList.map(organizerId => {
                 return makeRequest(`https://www.eventbriteapi.com/v3/events/search/?token=${process.env.TOKEN}&organizer.id=${organizerId}`)
             })
+            // creamos un array de 1 solo elemento con los eventos que correspondan a la configuración
             const allPromises = whiteListPromises.concat([
                 makeRequest(`https://www.eventbriteapi.com/v3/events/search/?token=${process.env.TOKEN}&${querystring.stringify(options)}`)
             ])
 
+            // esperamos que se resuelvan las peticiones
             const data = await Promise.all(allPromises)
+                // generamos un array de 1 solo nivel por medio de un reduce
+                // que solo concatena todos los eventos
                 .then(data => data.reduce(
                     (output, rawData) => output.concat(rawData.events),
                     []
                 ))
+                // formateamos el array de eventos para que tenga solo los datos que necesitamos
                 .then(formatEvents)
 
+            // guardamos los datos en cache por el tiempo indicado por configuración
             cache.put('data', data, cacheExpiration)
         }
 

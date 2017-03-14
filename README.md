@@ -2,17 +2,16 @@
 
 Microservicio que devuelve un JSON con los próximos eventos de eventbrite indicados por configuración
 
-## Live
-
 [eventbrite-api](https://eventbrite-api.now.sh/)
 
-## Motivación
+## Como funciona
 
-Obtener los próximos eventos de tecnología de CABA, Buenos Aires, Argentina
+* Usa el [API de eventbrite](https://www.eventbrite.com/developer/v3/) para obtener los meetups que apliquen para la configuración dada (un rango de distancia sobre una latitud y una longitud)
+* Usa [memory-cache](https://github.com/ptarjan/node-cache) para almacenar los resultados por un tiempo determinado (indicado por configuración), para que no se estén haciendo pedidos todo el tiempo
 
 ## Desarrollo
 
-Duplicar el archivo `.env-template`, nombrarlo como `.env` y reemplazar por los valores que se necesiten
+> Antes de empezar, duplicar el archivo `.env-template`, nombrarlo como `.env` y reemplazar por los valores que se necesiten
 
 ```bash
 # npm install
@@ -24,6 +23,6 @@ npm run start-dev
 
 [ToDo list](https://github.com/meetupjs-ar/eventbrite-api/projects/1)
 
-## License
+## Licencia
 
 MIT
