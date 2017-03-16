@@ -19,10 +19,6 @@ yarn install
 npm run start-dev
 ```
 
-## Colaboración
-
-[ToDo list](https://github.com/meetupjs-ar/eventbrite-api/projects/1)
-
 ## Licencia
 
 MIT
