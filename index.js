@@ -11,6 +11,7 @@ const microCors = require('micro-cors')
 const { send } = require('micro')
 const querystring = require('querystring')
 
+const blackList = process.env.BLACK_LIST ? process.env.BLACK_LIST.split(',') : []
 const cacheExpiration = parseInt(process.env.CACHE_EXPIRATION)
 const cors = microCors({
     allowMethods: ['GET']
@@ -45,6 +46,8 @@ async function handler (req, res) {
                     (output, rawData) => output.concat(rawData.events),
                     []
                 ))
+                // filtramos los eventos que no queremos que aparezcan
+                .then(data => data.filter(event => !blackList.includes(event.id.toString())))
                 // formateamos el array de eventos para que tenga solo los datos que necesitamos
                 .then(formatEvents)
 
