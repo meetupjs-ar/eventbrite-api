@@ -28,12 +28,11 @@ async function handler (req, res) {
     try {
         // si el resultado del API no fue previamente cacheado
         if (!cache.get('data')) {
-            // creamos un array de promesas con las peticiones a los eventos que sabemos que
-            // no entran en el rango
+            // creamos un array de promesas con los eventos de la white-list
             const whiteListPromises = whiteList.map(organizerId => {
                 return makeRequest(`https://www.eventbriteapi.com/v3/events/search/?token=${process.env.TOKEN}&organizer.id=${organizerId}`)
             })
-            // creamos un array de 1 solo elemento con los eventos que correspondan a la configuración
+            // añadimos la búsqueda de los eventos de la configuración
             const allPromises = whiteListPromises.concat([
                 makeRequest(`https://www.eventbriteapi.com/v3/events/search/?token=${process.env.TOKEN}&${querystring.stringify(options)}`)
             ])
