@@ -45,8 +45,8 @@ async function handler (req, res) {
                     (output, rawData) => output.concat(rawData.events),
                     []
                 ))
-                // filtramos los eventos que no queremos que aparezcan
-                .then(data => data.filter(event => !blackList.includes(event.id.toString())))
+                // filtramos los eventos de los organizadores que no queremos que aparezcan
+                .then(data => data.filter(event => !blackList.includes(event.organizer_id.toString())))
                 // formateamos el array de eventos para que tenga solo los datos que necesitamos
                 .then(formatEvents)
 

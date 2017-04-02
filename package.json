@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "NODE_ENV=development micro -p ${PORT:-4003}",
     "precommit": "eslint '**/*.js'",
     "start": "micro",
-    "start-dev": "NODE_ENV=development micro -p ${PORT:-4003}"
+    "start-dev": "nodemon --exec npm run dev"
   },
   "author": "durancristhian@gmail.com",
   "license": "MIT",
@@ -14,7 +15,8 @@
     "got": "^6.7.1",
     "memory-cache": "^0.1.6",
     "micro": "^7.0.6",
-    "micro-cors": "^0.0.1"
+    "micro-cors": "^0.0.1",
+    "nodemon": "^1.11.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
