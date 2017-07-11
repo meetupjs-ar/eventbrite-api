@@ -17,10 +17,10 @@ const cors = microCors({
     allowMethods: ['GET']
 })
 const options = {
-    'categories': process.env.CATEGORIES,
     'location.latitude': process.env.LAT,
     'location.longitude': process.env.LON,
-    'location.within': process.env.RADIUS
+    'location.within': process.env.RADIUS,
+    'subcategories': process.env.SUBCATEGORIES
 }
 const whiteList = process.env.WHITE_LIST ? process.env.WHITE_LIST.split(',') : []
 
