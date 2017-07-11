@@ -9,33 +9,22 @@ const formatEvents = require('./lib/format-events')
 const makeRequest = require('./lib/make-request')
 const microCors = require('micro-cors')
 const { send } = require('micro')
-const querystring = require('querystring')
 
-const blackList = process.env.BLACK_LIST ? process.env.BLACK_LIST.split(',') : []
 const cacheExpiration = parseInt(process.env.CACHE_EXPIRATION)
 const cors = microCors({
     allowMethods: ['GET']
 })
-const options = {
-    'location.latitude': process.env.LAT,
-    'location.longitude': process.env.LON,
-    'location.within': process.env.RADIUS,
-    'subcategories': process.env.SUBCATEGORIES
-}
-const whiteList = process.env.WHITE_LIST ? process.env.WHITE_LIST.split(',') : []
+const organizers = process.env.ORGANIZERS ? process.env.ORGANIZERS.split(',') : []
 
 async function handler (req, res) {
     try {
         // si el resultado del API no fue previamente cacheado
         if (!cache.get('data')) {
-            // creamos un array de promesas con los eventos de la white-list
-            const whiteListPromises = whiteList.map(organizerId => {
+            // creamos un array de promesas con los eventos de los organizadores
+            // indicados por configuración
+            const allPromises = organizers.map(organizerId => {
                 return makeRequest(`https://www.eventbriteapi.com/v3/events/search/?token=${process.env.TOKEN}&organizer.id=${organizerId}`)
             })
-            // añadimos la búsqueda de los eventos de la configuración
-            const allPromises = whiteListPromises.concat([
-                makeRequest(`https://www.eventbriteapi.com/v3/events/search/?token=${process.env.TOKEN}&${querystring.stringify(options)}`)
-            ])
 
             // esperamos que se resuelvan las peticiones
             const data = await Promise.all(allPromises)
@@ -45,8 +34,6 @@ async function handler (req, res) {
                     (output, rawData) => output.concat(rawData.events),
                     []
                 ))
-                // filtramos los eventos de los organizadores que no queremos que aparezcan
-                .then(data => data.filter(event => !blackList.includes(event.organizer_id.toString())))
                 // formateamos el array de eventos para que tenga solo los datos que necesitamos
                 .then(formatEvents)
 
