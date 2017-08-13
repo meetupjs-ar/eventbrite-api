@@ -16,24 +16,24 @@ const cors = microCors({
 })
 const organizers = process.env.ORGANIZERS ? process.env.ORGANIZERS.split(',') : []
 
-async function handler (req, res) {
+async function handler(req, res) {
     try {
         // si el resultado del API no fue previamente cacheado
         if (!cache.get('data')) {
             // creamos un array de promesas con los eventos de los organizadores
             // indicados por configuración
             const allPromises = organizers.map(organizerId => {
-                return makeRequest(`https://www.eventbriteapi.com/v3/events/search/?token=${process.env.TOKEN}&organizer.id=${organizerId}`)
+                return makeRequest(
+                    `https://www.eventbriteapi.com/v3/events/search/?token=${process.env
+                        .TOKEN}&organizer.id=${organizerId}`
+                )
             })
 
             // esperamos que se resuelvan las peticiones
             const data = await Promise.all(allPromises)
                 // generamos un array de 1 solo nivel por medio de un reduce
                 // que solo concatena todos los eventos
-                .then(data => data.reduce(
-                    (output, rawData) => output.concat(rawData.events),
-                    []
-                ))
+                .then(data => data.reduce((output, rawData) => output.concat(rawData.events), []))
                 // formateamos el array de eventos para que tenga solo los datos que necesitamos
                 .then(formatEvents)
 
