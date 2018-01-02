@@ -14,8 +14,7 @@ Microservicio que devuelve un JSON con los próximos eventos de eventbrite indic
 > Antes de empezar, duplicar el archivo `.env-template`, nombrarlo como `.env` y reemplazar por los valores que se necesiten
 
 ```bash
-# npm install
-yarn install
+npm install
 npm run dev
 ```
 
