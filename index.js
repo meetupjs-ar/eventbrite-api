@@ -24,8 +24,9 @@ async function handler(req, res) {
             // indicados por configuración
             const allPromises = organizers.map(organizerId => {
                 return makeRequest(
-                    `https://www.eventbriteapi.com/v3/events/search/?token=${process.env
-                        .TOKEN}&organizer.id=${organizerId}`
+                    `https://www.eventbriteapi.com/v3/events/search/?token=${
+                        process.env.TOKEN
+                    }&organizer.id=${organizerId}`
                 )
             })
 
