@@ -1,6 +1,6 @@
 # eventbrite-api
 
-[![Build Status](https://travis-ci.org/meetupjs-ar/eventbrite-api.svg?branch=master)](https://travis-ci.org/meetupjs-ar/eventbrite-api)
+[![Build Status](https://travis-ci.org/meetupjs-ar/eventbrite-api.svg?branch=master)](https://travis-ci.org/meetupjs-ar/eventbrite-api) [![Greenkeeper badge](https://badges.greenkeeper.io/meetupjs-ar/eventbrite-api.svg)](https://greenkeeper.io/)
 
 Microservicio que devuelve un JSON con los próximos eventos de eventbrite indicados por configuración
 
