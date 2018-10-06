@@ -1,32 +1,36 @@
 {
-    "name": "eventbrite-api",
-    "version": "1.0.1",
-    "main": "index.js",
-    "scripts": {
-        "clean-deploys": "now rm $INSTANCE_NAME --safe --token $NOW_TOKEN --yes",
-        "deploy": "now alias $(now --name $INSTANCE_NAME -e CACHE_EXPIRATION=$CACHE_EXPIRATION -e ORGANIZERS=$ORGANIZERS -e TOKEN=$TOKEN --npm --token $NOW_TOKEN) $INSTANCE_NAME --token=$NOW_TOKEN",
-        "dev": "micro-dev -p ${PORT:-4003}",
-        "precommit": "eslint '**/*.js'",
-        "scale": "now scale $INSTANCE_NAME sfo 1 --token $NOW_TOKEN",
-        "start": "micro"
-    },
-    "author": "durancristhian@gmail.com",
-    "license": "MIT",
-    "dependencies": {
-        "dotenv": "^6.0.0",
-        "got": "^9.2.2",
-        "memory-cache": "^0.2.0",
-        "micro": "^9.3.3",
-        "micro-cors": "^0.1.1"
-    },
-    "devDependencies": {
-        "babel-eslint": "^10.0.1",
-        "eslint": "^5.6.1",
-        "husky": "^1.1.1",
-        "micro-dev": "^3.0.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/meetupjs-ar/eventbrite-api.git"
+  "name": "eventbrite-api",
+  "version": "1.0.1",
+  "main": "index.js",
+  "scripts": {
+    "clean-deploys": "now rm $INSTANCE_NAME --safe --token $NOW_TOKEN --yes",
+    "deploy": "now alias $(now --name $INSTANCE_NAME -e CACHE_EXPIRATION=$CACHE_EXPIRATION -e ORGANIZERS=$ORGANIZERS -e TOKEN=$TOKEN --npm --token $NOW_TOKEN) $INSTANCE_NAME --token=$NOW_TOKEN",
+    "dev": "micro-dev -p ${PORT:-4003}",
+    "scale": "now scale $INSTANCE_NAME sfo 1 --token $NOW_TOKEN",
+    "start": "micro"
+  },
+  "author": "durancristhian@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "got": "^9.2.2",
+    "memory-cache": "^0.2.0",
+    "micro": "^9.3.3",
+    "micro-cors": "^0.1.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.6.1",
+    "husky": "^1.1.1",
+    "micro-dev": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meetupjs-ar/eventbrite-api.git"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "eslint '**/*.js'"
     }
+  }
 }
