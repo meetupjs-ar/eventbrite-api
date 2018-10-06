@@ -5,8 +5,6 @@ cache:
         - node_modules
 notifications:
     email: false
-script:
-    - npm run precommit
 before_deploy:
     - npm i now --no-save
 deploy:
