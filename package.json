@@ -12,7 +12,7 @@
   "author": "durancristhian@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^8.0.0",
+    "dotenv": "^8.1.0",
     "got": "^9.6.0",
     "memory-cache": "^0.2.0",
     "micro": "^9.3.4",
